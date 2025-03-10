@@ -38,16 +38,17 @@ class PipelineStack(core.Stack):
                 export_name="ecr-repo-name")
 
         ecr_output_uri = core.CfnOutput(self, 'ecr_repo_uri', 
-                value=ecr_repo.repository_uri,
+                value=ecr_repo.repository_uri, 
                 export_name="ecr-repo-uri")
 
-        github_repo='YOUR_GITHUB_USERNAME/cdk_pipelines_demo'
+        github_repo='sonuabraham-aremedia/aws-cdk-pipelines-demo'
 
         git_hub_commit = _pipelines.CodePipelineSource.git_hub(
                     github_repo,
                     "main",
-                    authentication=_cdk.SecretValue.secrets_manager(
-                        "lambda_container_cdk_pipeline_github", json_field='github')
+                    #authentication=_cdk.SecretValue.secrets_manager(
+                    #    "lambda_container_cdk_pipeline_github", json_field= None)
+                    authentication=_cdk.SecretValue.secrets_manager("lambda_container_cdk_github_pipeline",json_field= 'github')
         )
 
         pipeline = _pipelines.CodePipeline(self, "Container_Pipeline",
